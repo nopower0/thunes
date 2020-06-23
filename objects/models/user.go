@@ -21,14 +21,14 @@ func NewUserManager(db *xorm.Engine) *UserManager {
 }
 
 func (m *UserManager) Get(uid int) (*User, error) {
-	if users, err := m.getMany([]int{uid}); err != nil {
+	if users, err := m.GetMany([]int{uid}); err != nil {
 		return nil, err
 	} else {
 		return users[uid], nil
 	}
 }
 
-func (m *UserManager) getMany(uids []int) (map[int]*User, error) {
+func (m *UserManager) GetMany(uids []int) (map[int]*User, error) {
 	var users []*User
 	if err := m.db.In("uid", uids).Find(&users); err != nil {
 		return nil, errors.Wrap(err, "error getting user by id from DB")

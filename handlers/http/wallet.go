@@ -63,3 +63,49 @@ func (*WalletHandler) Transfer(c echo.Context) error {
 		})
 	}
 }
+
+func (*WalletHandler) GetHistories(c echo.Context) error {
+	req := &wallet.GetHistoriesReq{
+		Length: 10,
+	}
+	if err := c.Bind(req); err != nil {
+		return bindings.JSONResponse(c, bindings.NewParamError(err.Error()))
+	}
+
+	tokenInfo := tools.GetTokenInfo(c)
+
+	// Get histories
+	histories, err := models.DefaultTransferHistoryManager.Get(tokenInfo.UID, req.Start, req.Length)
+	if err != nil {
+		return err
+	}
+
+	// Get all receivers
+	uidSet := make(map[int]struct{})
+	for _, h := range histories {
+		uidSet[h.ToUID] = struct{}{}
+	}
+	uids := make([]int, 0, len(uidSet))
+	for uid := range uidSet {
+		uids = append(uids, uid)
+	}
+	receivers, err := models.DefaultUserManager.GetMany(uids)
+	if err != nil {
+		return err
+	}
+
+	// Build response
+	rspHistories := make([]*wallet.TransferHistory, len(histories))
+	for i, h := range histories {
+		receiver := receivers[h.ToUID]
+		rspHistories[i] = &wallet.TransferHistory{
+			To: &wallet.User{
+				UID:      receiver.UID,
+				Username: receiver.Username,
+			},
+			Amount:          h.Amount,
+			TransactionTime: int(h.AddTime.Unix()),
+		}
+	}
+	return bindings.JSONResponse(c, wallet.GetHistoriesRsp{Histories: rspHistories})
+}

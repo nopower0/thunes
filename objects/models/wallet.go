@@ -115,3 +115,23 @@ func (m *WalletManager) Transfer(from, to, amount int) (*TransferReceipt, error)
 		Time: history.AddTime,
 	}, nil
 }
+
+type TransferHistoryManager struct {
+	db *xorm.Engine
+}
+
+func NewTransferHistoryManager(db *xorm.Engine) *TransferHistoryManager {
+	return &TransferHistoryManager{db: db}
+}
+
+func (m *TransferHistoryManager) Get(uid, start, length int) ([]*TransferHistory, error) {
+	var histories []*TransferHistory
+	query := m.db.Where("from_uid = ?", uid)
+	if start != 0 {
+		query = query.And("id < ?", start)
+	}
+	if err := query.Desc("id").Limit(length).Find(&histories); err != nil {
+		return nil, errors.Wrap(err, "error getting transfer histories from DB")
+	}
+	return histories, nil
+}

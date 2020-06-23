@@ -9,8 +9,9 @@ import (
 )
 
 var (
-	DefaultWalletManager *WalletManager
-	DefaultUserManager   *UserManager
+	DefaultWalletManager          *WalletManager
+	DefaultUserManager            *UserManager
+	DefaultTransferHistoryManager *TransferHistoryManager
 )
 
 func Init() {
@@ -25,4 +26,5 @@ func Init() {
 
 	DefaultWalletManager = NewWalletManager(engine)
 	DefaultUserManager = NewUserManager(engine)
+	DefaultTransferHistoryManager = NewTransferHistoryManager(engine)
 }

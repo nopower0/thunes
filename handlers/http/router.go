@@ -24,5 +24,6 @@ func SetupRouter(e *echo.Echo) {
 		h := new(WalletHandler)
 		g.POST("/get", h.Get)
 		g.POST("/transfer", h.Transfer)
+		g.POST("/get_histories", h.GetHistories)
 	}
 }
