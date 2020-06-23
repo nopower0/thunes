@@ -23,5 +23,6 @@ func SetupRouter(e *echo.Echo) {
 		g := e.Group("/wallet", middlewares.TokenMiddleware(), middlewares.AuthMiddleware())
 		h := new(WalletHandler)
 		g.POST("/get", h.Get)
+		g.POST("/transfer", h.Transfer)
 	}
 }

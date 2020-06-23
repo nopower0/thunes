@@ -49,7 +49,7 @@ func (m *WalletManager) Get(uid int) (*Wallet, error) {
 func (m *WalletManager) getMany(uids []int) (map[int]*Wallet, error) {
 	var wallets []*Wallet
 	if err := m.db.In("uid", uids).Find(&wallets); err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "error getting wallet by ID from DB")
 	}
 	result := make(map[int]*Wallet, len(wallets))
 	for _, w := range wallets {
@@ -103,6 +103,10 @@ func (m *WalletManager) Transfer(from, to, amount int) (*TransferReceipt, error)
 	}
 	if _, err := session.InsertOne(history); err != nil {
 		return nil, errors.Wrap(err, "error creating transfer history")
+	}
+
+	if err := session.Commit(); err != nil {
+		return nil, errors.Wrap(err, "error committing transfer transaction")
 	}
 
 	return &TransferReceipt{

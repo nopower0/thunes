@@ -8,10 +8,11 @@ import (
 	"thunes/objects/business"
 	"thunes/objects/models"
 	"thunes/settings"
+	"thunes/tools"
 	"time"
 )
 
-type TokenHandler struct {}
+type TokenHandler struct{}
 
 func (*TokenHandler) Request(c echo.Context) error {
 	req := new(token.RequestReq)
@@ -23,7 +24,8 @@ func (*TokenHandler) Request(c echo.Context) error {
 	expireAt := time.Now().Add(settings.TokenTTL)
 
 	if len(req.Username) != 0 || len(req.Password) != 0 {
-		if user, err := models.DefaultUserManager.Get(req.Username, req.Password); err != nil {
+		passwordHash := tools.PasswordHash(req.Password)
+		if user, err := models.DefaultUserManager.GetByCredential(req.Username, passwordHash); err != nil {
 			return err
 		} else if user == nil {
 			return bindings.JSONResponse(c, bindings.InvalidUsernameOrPasswordError)

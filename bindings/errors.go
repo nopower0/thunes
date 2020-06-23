@@ -26,6 +26,14 @@ var (
 		Code:    "U0003",
 		Message: "User already login",
 	}
+	TransferToNotExistError = &Error{
+		Code:    "U0004",
+		Message: "Transfer to user not exist",
+	}
+	InsufficientBalanceError = &Error{
+		Code:    "W0001",
+		Message: "Insufficient balance",
+	}
 )
 
 func NewParamError(msg string) *Error {

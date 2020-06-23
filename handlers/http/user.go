@@ -30,7 +30,7 @@ func (h *UserHandler) Login(c echo.Context) error {
 
 	passwordHash := tools.PasswordHash(req.Password)
 
-	if u, err := models.DefaultUserManager.Get(req.Username, passwordHash); err != nil {
+	if u, err := models.DefaultUserManager.GetByCredential(req.Username, passwordHash); err != nil {
 		return err
 	} else if u == nil {
 		return bindings.JSONResponse(c, bindings.InvalidUsernameOrPasswordError)

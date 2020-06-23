@@ -1,10 +1,7 @@
 package wallet
 
-type GetRsp struct {
-	Wallet *Wallet `json:"wallet"`
-}
+import "thunes/bindings"
 
-type Wallet struct {
-	UID int `json:"uid"`
-	SGD int `json:"sgd"`
+type GetRsp struct {
+	Wallet *bindings.Wallet `json:"wallet"`
 }
