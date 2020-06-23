@@ -7,7 +7,7 @@ import (
 
 func PrometheusMiddleware() echo.MiddlewareFunc {
 	config := prometheus.DefaultConfig
-	config.Namespace = "money"
+	config.Namespace = "thunes"
 	config.Subsystem = ""
 	return prometheus.MetricsMiddlewareWithConfig(config)
 }
