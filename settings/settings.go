@@ -1,7 +1,6 @@
 package settings
 
 import (
-	"encoding/json"
 	"go.uber.org/zap"
 	"os"
 	"thunes/tools"
@@ -37,14 +36,9 @@ func Init() {
 		confPath = path
 	}
 
-	f, err := os.Open(confPath)
-	if err != nil {
-		zap.L().Fatal("error opening config file", zap.String("path", confPath), zap.Error(err))
-	}
-
 	conf := new(config)
-	if err := json.NewDecoder(f).Decode(conf); err != nil {
-		zap.L().Fatal("error parsing config file", zap.String("path", confPath), zap.Error(err))
+	if err := tools.LoadConfigFromFile(confPath, conf); err != nil {
+		zap.L().Fatal("error loading config file", zap.String("path", confPath), zap.Error(err))
 	}
 
 	Port = conf.Port

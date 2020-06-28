@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"github.com/pkg/errors"
 	"time"
 	"xorm.io/xorm"
@@ -134,4 +135,41 @@ func (m *TransferHistoryManager) Get(uid, start, length int) ([]*TransferHistory
 		return nil, errors.Wrap(err, "error getting transfer histories from DB")
 	}
 	return histories, nil
+}
+
+type WalletAnalysisManager struct {
+	db *xorm.Engine
+}
+
+type TransactionSummary struct {
+	Count    int `json:"count"`
+	TotalSGD int `json:"total_sgd"`
+}
+
+type WalletSummary struct {
+	TotalUser int `json:"total_user"`
+	TotalSGD  int `xorm:"'total_sgd'" json:"total_sgd"`
+}
+
+func NewWalletAnalysisManager(db *xorm.Engine) *WalletAnalysisManager {
+	return &WalletAnalysisManager{db: db}
+}
+
+func (m *WalletAnalysisManager) GetWalletSummary() (*WalletSummary, error) {
+	sql := `select count(1) as total_user, sum(sgd) as total_sgd from wallet`
+	summary := new(WalletSummary)
+	if _, err := m.db.SQL(sql).Get(summary); err != nil {
+		return nil, errors.Wrap(err, "error getting total cash from DB")
+	} else {
+		return summary, nil
+	}
+}
+
+func (m *WalletAnalysisManager) GetTransactionSummary(start, end time.Time) (*TransactionSummary, error) {
+	sql := fmt.Sprintf(`select count(1), sum(amount) from transfer_history where add_time > '%s' and add_time <= '%s'`, start.Format("2006-01-02"), end.Format("2006-01-02"))
+	summary := new(TransactionSummary)
+	if _, err := m.db.SQL(sql).Get(summary); err != nil {
+		return nil, err
+	}
+	return summary, nil
 }

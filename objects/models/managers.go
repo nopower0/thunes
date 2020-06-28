@@ -12,6 +12,7 @@ var (
 	DefaultWalletManager          *WalletManager
 	DefaultUserManager            *UserManager
 	DefaultTransferHistoryManager *TransferHistoryManager
+	DefaultWalletAnalysisManager  *WalletAnalysisManager
 )
 
 func Init() {
@@ -27,4 +28,5 @@ func Init() {
 	DefaultWalletManager = NewWalletManager(engine)
 	DefaultUserManager = NewUserManager(engine)
 	DefaultTransferHistoryManager = NewTransferHistoryManager(engine)
+	DefaultWalletAnalysisManager = NewWalletAnalysisManager(engine)
 }

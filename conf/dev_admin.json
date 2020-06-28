@@ -1,0 +1,14 @@
+{
+  "port": 8012,
+  "db": {
+    "default": "root:root@tcp(127.0.0.1:3306)/thunes?charset=utf8mb4"
+  },
+  "redis": {
+    "default": {
+      "rw": "redis://127.0.0.1:6379/0"
+    }
+  },
+  "token": {
+    "ttl": 86400
+  }
+}
