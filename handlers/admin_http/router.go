@@ -17,6 +17,7 @@ func SetupRouter(e *echo.Echo) {
 		g := e.Group("/user", middlewares.TokenMiddleware())
 		h := new(UserHandler)
 		g.POST("/login", h.Login)
+		g.POST("/add", h.Add)
 	}
 	// Wallet Related
 	{
@@ -24,5 +25,6 @@ func SetupRouter(e *echo.Echo) {
 		h := new(WalletHandler)
 		g.POST("/get_summary", h.GetSummary)
 		g.POST("/get_transaction_summary", h.GetTransactionSummary)
+		g.POST("/list", h.List)
 	}
 }

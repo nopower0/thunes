@@ -173,3 +173,11 @@ func (m *WalletAnalysisManager) GetTransactionSummary(start, end time.Time) (*Tr
 	}
 	return summary, nil
 }
+
+func (m *WalletAnalysisManager) GetAllWallets() ([]*Wallet, error) {
+	var wallets []*Wallet
+	if err := m.db.Desc("uid").Find(&wallets); err != nil {
+		return nil, err
+	}
+	return wallets, nil
+}

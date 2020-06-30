@@ -44,3 +44,20 @@ func (*WalletHandler) GetTransactionSummary(c echo.Context) error {
 		})
 	}
 }
+
+func (*WalletHandler) List(c echo.Context) error {
+	if wList, err := models.DefaultWalletAnalysisManager.GetAllWallets(); err != nil {
+		return err
+	} else {
+		records := make([]*bindings.Wallet, len(wList))
+		for i, w := range wList {
+			records[i] = &bindings.Wallet{
+				UID: w.UID,
+				SGD: w.SGD,
+			}
+		}
+		return bindings.JSONResponse(c, map[string]interface{}{
+			"records": records,
+		})
+	}
+}
