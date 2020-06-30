@@ -4,5 +4,6 @@ MAINTAINER Jiajun Liu <liujiajun@rightpaddle.com>
 WORKDIR /data/service
 
 ADD thunes_http_server_linux /data/service
+ADD thunes_admin_server_linux /data/service
 
 CMD ./thunes_http_server_linux

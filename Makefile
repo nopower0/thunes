@@ -16,7 +16,13 @@ linux_http_server:
 	@go build -o $(CURRENT)_http_server_linux cmd/http_server/main.go
 .PHONY: linux_http_server
 
-image: linux_http_server
+linux_admin_server: export GOOS = linux
+linux_admin_server:
+	@echo make linux_admin_server
+	@go build -o $(CURRENT)_admin_server_linux cmd/admin_http_server/main.go
+.PHONY: linux_admin_server
+
+image: linux_http_server linux_admin_server
 	@docker build -t nopower0/thunes .
 	@docker push nopower0/thunes
 .PHONY: image
