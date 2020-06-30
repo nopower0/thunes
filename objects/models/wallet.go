@@ -59,6 +59,17 @@ func (m *WalletManager) getMany(uids []int) (map[int]*Wallet, error) {
 	return result, nil
 }
 
+func (m *WalletManager) Create(uid, sgd int) (*Wallet, error) {
+	w := &Wallet{
+		UID: uid,
+		SGD: sgd,
+	}
+	if _, err := m.db.InsertOne(w); err != nil {
+		return nil, err
+	}
+	return w, nil
+}
+
 func (m *WalletManager) Transfer(from, to, amount int) (*TransferReceipt, error) {
 	session := m.db.NewSession().ForUpdate()
 	if err := session.Begin(); err != nil {
@@ -176,7 +187,7 @@ func (m *WalletAnalysisManager) GetTransactionSummary(start, end time.Time) (*Tr
 
 func (m *WalletAnalysisManager) GetAllWallets() ([]*Wallet, error) {
 	var wallets []*Wallet
-	if err := m.db.Desc("uid").Find(&wallets); err != nil {
+	if err := m.db.Asc("uid").Find(&wallets); err != nil {
 		return nil, err
 	}
 	return wallets, nil

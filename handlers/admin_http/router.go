@@ -26,5 +26,6 @@ func SetupRouter(e *echo.Echo) {
 		g.POST("/get_summary", h.GetSummary)
 		g.POST("/get_transaction_summary", h.GetTransactionSummary)
 		g.POST("/list", h.List)
+		g.POST("/create", h.Create)
 	}
 }
