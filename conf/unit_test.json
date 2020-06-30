@@ -1,0 +1,14 @@
+{
+  "port": 8011,
+  "db": {
+    "default": "invalid db url"
+  },
+  "redis": {
+    "default": {
+      "rw": "invalid redis url"
+    }
+  },
+  "token": {
+    "ttl": 86400
+  }
+}

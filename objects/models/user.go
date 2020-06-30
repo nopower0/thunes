@@ -12,6 +12,13 @@ type User struct {
 	Password          string `xorm:"varchar(64)" json:"password"`
 }
 
+type IUserManager interface {
+	Get(uid int) (*User, error)
+	GetMany(uids []int) (map[int]*User, error)
+	GetByCredential(username, password string) (*User, error)
+	Create(username, password string) (*User, error)
+}
+
 type UserManager struct {
 	db *xorm.Engine
 }

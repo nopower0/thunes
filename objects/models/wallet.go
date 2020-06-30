@@ -27,6 +27,12 @@ type TransferReceipt struct {
 	Time time.Time
 }
 
+type IWalletManager interface {
+	Get(uid int) (*Wallet, error)
+	Create(uid, sgd int) (*Wallet, error)
+	Transfer(from, to, amount int) (*TransferReceipt, error)
+}
+
 type WalletManager struct {
 	db *xorm.Engine
 }
@@ -126,6 +132,10 @@ func (m *WalletManager) Transfer(from, to, amount int) (*TransferReceipt, error)
 		To:   toWallet,
 		Time: history.AddTime,
 	}, nil
+}
+
+type ITransferHistoryManager interface {
+	Get(uid, start, length int) ([]*TransferHistory, error)
 }
 
 type TransferHistoryManager struct {

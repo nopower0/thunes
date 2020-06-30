@@ -9,9 +9,9 @@ import (
 )
 
 var (
-	DefaultWalletManager          *WalletManager
-	DefaultUserManager            *UserManager
-	DefaultTransferHistoryManager *TransferHistoryManager
+	DefaultWalletManager          IWalletManager
+	DefaultUserManager            IUserManager
+	DefaultTransferHistoryManager ITransferHistoryManager
 	DefaultWalletAnalysisManager  *WalletAnalysisManager
 )
 

@@ -12,6 +12,7 @@ require (
 	github.com/pkg/errors v0.8.1
 	github.com/prometheus/client_golang v1.1.0
 	github.com/satori/go.uuid v1.2.0
+	github.com/stretchr/testify v1.4.0
 	go.uber.org/zap v1.15.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	xorm.io/xorm v1.0.2

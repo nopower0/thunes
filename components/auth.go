@@ -11,6 +11,12 @@ import (
 	"time"
 )
 
+type IAuthService interface {
+	GetTokenInfo(token string) (*business.TokenInfo, error)
+	CreateTokenInfo(info *business.TokenInfo, expireAt time.Time) (string, error)
+	UpdateTokenInfo(token string, info *business.TokenInfo, expireAt time.Time) error
+}
+
 type AuthService struct {
 	r *tools.RedisClient
 }
@@ -69,5 +75,3 @@ func (s *AuthService) UpdateTokenInfo(token string, info *business.TokenInfo, ex
 func (s *AuthService) getKey(token string) string {
 	return fmt.Sprintf(tokenKey, token)
 }
-
-

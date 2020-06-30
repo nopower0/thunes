@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	DefaultAuthService *AuthService
+	DefaultAuthService IAuthService
 )
 
 func Init() {
